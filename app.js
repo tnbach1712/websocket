@@ -25,7 +25,9 @@ io.on('connection', function (socket) {
 var chat = io
   .of('/chat')
   .on('connection', function (socket) {
-    console.log(chat)
+
+    console.log('connection')
+    
     socket.emit('a message', {
       that: 'only'
       , '/chat': 'will get'
@@ -60,7 +62,19 @@ var chat = io
   })
 
 var news = io
-  .of('/news')
+  .of('/notify')
   .on('connection', function (socket) {
-    socket.emit('item', { news: 'item' });
+    // socket.emit('item', { news: 'item' });
+    socket.on("aNotify", function (data) {
+      chat.emit('aNotify', data)
+    })
+
+    socket.on("sendNotify", function (data) {
+      chat.emit('sendNotify', data)
+    })
+
+    socket.on("joinConversation", function(data){
+      console.log('connection: ' + data.conversationId)
+      socket.join(data.conversationId)
+    })
   });

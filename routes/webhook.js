@@ -24,6 +24,12 @@ module.exports = function (app) {
       res.send('Got a DELETE request at /user');
     });
 
+  app.get('/send_notify', function (req, res) {
+    var userEmail = req.query.username
+    var nsp = io.of('/notify')
+    nsp.to(userEmail).emit('receiveNotify', { req: req.query.message });
+    res.send('Send notify success');
+  });
   app.get('/', function (req, res) {
     res.render('pages/index');
   });
