@@ -5,7 +5,9 @@ module.exports = function (app) {
     .get(function (req, res) {
       var nsp = io.of('/chat')
       var room = req.query.room
-      nsp.to(room).emit('aMessage', { req: req.query.message });
+      console.log(req.query)
+      console.log(room)
+      nsp.to(room).emit('aMessage', req.query.message );
       // io.emit('news', { hello: 'demo 2', req: req.body });
 
       res.send('Got a Get request');
@@ -13,7 +15,8 @@ module.exports = function (app) {
     .post(function (req, res) {
       var nsp = io.of('/chat')
       var room = req.query.room
-      nsp.to(room).emit('aMessage', { req: req.body.message });
+      console.log(room)
+      nsp.to(room).emit('aMessage', req.query.message );
 
       res.send('Got a POST request');
     })
@@ -27,7 +30,9 @@ module.exports = function (app) {
   app.get('/send_notify', function (req, res) {
     var userEmail = req.query.username
     var nsp = io.of('/notify')
-    nsp.to(userEmail).emit('receiveNotify', { req: req.query.message });
+    console.log(userEmail)
+    console.log(req.query.message)
+    nsp.to(userEmail).emit('receiveNotify', req.query.message );
     res.send('Send notify success');
   });
   app.get('/', function (req, res) {
