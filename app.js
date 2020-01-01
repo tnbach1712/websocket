@@ -2,7 +2,13 @@
 
 var app = require('express')();
 var fs = require('fs');
-var server = require('http').Server(app);
+// var server = require('http').Server(app);
+var server = require('https').createServer({
+  key: fs.readFileSync('./key.pem'),
+  cert: fs.readFileSync('./cert.pem'),
+  passphrase: 'nguyenbach'
+}, app)
+
 var io = require('socket.io')(server);
 const redis = require('socket.io-redis');
 const config = require('./config.json');
@@ -15,7 +21,15 @@ var webhookRoutes = require('./routes/webhook.js');
 webhookRoutes(app);
 
 server.listen(config.webSocketPort);
-console.log(config)
+
+io.set('transports', ['websocket',
+    'flashsocket',
+    'htmlfile',
+    'xhr-polling',
+    'jsonp-polling',
+    'polling']);
+
+
 
 io.on('connection', function (socket) {
   socket.emit('connected');

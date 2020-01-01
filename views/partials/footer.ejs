@@ -1,7 +1,7 @@
 <p class="text-center text-muted">Sample app</p>
 <script src="/socket.io/socket.io.js"></script>
 <script>
-  var socket = io('http://localhost:3000');
+  var socket = io('/',{ 'secure': true, port: 8080} )
   socket.on('connected', function(data){
     console.log('user connections!!!')
   })
@@ -10,8 +10,8 @@
   });
   var data= {conversationId: "demo11"}
   var message= { text: "hello ban" } 
-  var chat = io.connect('http://localhost:3000/chat')
-      , news = io.connect('http://localhost:3000/news');
+  var chat = io.connect('/chat',{ 'secure': true, port: 8080} )
+      , news = io.connect('/news',{ 'secure': true, port: 8080} )
 
     chat.on('connect', function () {
       chat.emit('hi!');
