@@ -36,6 +36,12 @@ io.on('connection', function (socket) {
   
 });
 
+app.use(function(req, res, next){
+   res.header("Access-Control-Allow-Origin",  "*");
+   res.header("Access-Control-Allow-Headers", "*");
+   next();
+});
+
 var chat = io
   .of('/chat')
   .on('connection', function (socket) {
