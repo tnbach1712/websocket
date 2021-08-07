@@ -2,10 +2,18 @@
 
 var app = require('express')();
 var fs = require('fs');
-var cors = require('cors')
+// var cors = require('cors')
 
-app.use(cors());
-app.options('*', cors());
+// app.use(cors());
+// app.options('*', cors());
+
+
+// app.use(function(req, res, next){
+//   res.header("Access-Control-Allow-Origin",  "*");
+//   res.header("Access-Control-Allow-Headers", "*");
+//   next();
+// });
+
 
 // var server = require('http').Server(app);
 var server = require('https').createServer({
@@ -14,7 +22,7 @@ var server = require('https').createServer({
   passphrase: 'nguyenbach'
 }, app)
 
-var io = require('socket.io')(server);
+var io = require('socket.io').listen(server);
 const redis = require('socket.io-redis');
 const config = require('./config.json');
 
@@ -41,11 +49,11 @@ io.on('connection', function (socket) {
   
 });
 
-// app.use(function(req, res, next){
-//    res.header("Access-Control-Allow-Origin",  "*");
-//    res.header("Access-Control-Allow-Headers", "*");
-//    next();
-// });
+app.use(function(req, res, next){
+   res.header("Access-Control-Allow-Origin",  "*");
+   res.header("Access-Control-Allow-Headers", "*");
+   next();
+});
 
 var chat = io
   .of('/chat')
