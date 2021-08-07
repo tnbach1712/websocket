@@ -2,6 +2,11 @@
 
 var app = require('express')();
 var fs = require('fs');
+var cors = require('cors')
+
+app.use(cors());
+app.options('*', cors());
+
 // var server = require('http').Server(app);
 var server = require('https').createServer({
   key: fs.readFileSync('./key.pem'),
@@ -36,11 +41,11 @@ io.on('connection', function (socket) {
   
 });
 
-app.use(function(req, res, next){
-   res.header("Access-Control-Allow-Origin",  "*");
-   res.header("Access-Control-Allow-Headers", "*");
-   next();
-});
+// app.use(function(req, res, next){
+//    res.header("Access-Control-Allow-Origin",  "*");
+//    res.header("Access-Control-Allow-Headers", "*");
+//    next();
+// });
 
 var chat = io
   .of('/chat')
